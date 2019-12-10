@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins&display=swap');
+
+*, h1{
+    font-family: 'Poppins', sans-serif;
+}
+
 #my-map {
 	width:960px;
 	height:500px;
