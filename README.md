@@ -10,7 +10,7 @@ Requirements
 How to run
 -----------
 1. Install above programs and navigate to app/  
-2. Execute ```source bin/activate in``` shell to activate.  
+2. Execute ```source bin/activate``` in shell to activate.  
 3. (Optional) Run generate.py to generate a new dataset from the website.  
 4. Execute ```python -m SimpleHTTPServer 8000```.  
 5. Open a web browser and goto http://localhost:8000  
