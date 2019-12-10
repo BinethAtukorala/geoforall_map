@@ -25,7 +25,7 @@ def main():
 
     for row in rows:
         cols = row.find_all("td")
-        cols = [ele.text.strip() for ele in cols]
+        cols = [ele for ele in cols]
         data.append([ele for ele in cols])
     # print(data[1])
     # ----- Format of "data" --------
@@ -37,30 +37,37 @@ def main():
     for record in data:
         if(len(record)>0):
             # Organization
-            labname = record[1]
+            labname = record[1].text.strip()
+            laburl = ''
+            try:
+                laburl = record[1].find('a').get('href')
+            except:
+                pass
+
+            print(laburl)
             # City
-            city = record[2]
+            city = record[2].text.strip()
             # Country
-            country = record[3]
+            country = record[3].text.strip()
             # Continent
-            continent = record[4]
+            continent = record[4].text.strip()
             # Application status
-            applicationstatus = record[6]
+            applicationstatus = record[6].text.strip()
             # Notes
-            notes = record[7]
+            notes = record[7].text.strip()
             # Contact names
-            names = record[8]
+            names = record[8].text.strip()
             # Contact emails
-            emails = record[9]
+            emails = record[9].text.strip()
 
             # Long, lat
-            geolocation = record[5]
+            geolocation = record[5].text.strip()
             if(geolocation==u''):
                 continue
             longitude = float(geolocation.split(',')[0])
             latitude = float(geolocation.split(',')[1])
             # print(name+" "+latitude+" "+longitude)
-            records.append([labname, longitude, latitude, city, country, continent, applicationstatus, notes, names, emails])
+            records.append([labname, longitude, latitude, city, country, continent, applicationstatus, notes, names, emails, laburl])
 
     # print(MultiPoint(geo))
 
@@ -73,7 +80,7 @@ def main():
     for record in records:
         myPoint = Point((record[1], record[2]))
         myFeature = Feature(geometry=myPoint, properties={"Laboratory":record[0], "City":record[3], "Country":record[4], "Continent":record[5], "Application":record[6]
-                                                        , "Notes (specify category etc)":record[7], "Contact names":record[8], "Contact emails":record[9]})
+                                                        , "Notes (specify category etc)":record[7], "Contact names":record[8], "Contact emails":record[9], "url":record[10]})
         # myFeature = Feature(geometry=myPoint, properties={"Organisation":record[0]})
         myFeatures.append(myFeature)
 

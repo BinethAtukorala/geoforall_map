@@ -19,7 +19,7 @@ window.onload = function () {
              },
 
       onEachFeature: function (feature, layer) {
-        layer.bindPopup('<b>' + feature.properties.Laboratory + '</b>');
+        layer.bindPopup('<a href="' + feature.properties.url + '"><b>' + feature.properties.Laboratory + '</b></a>');
       }
     });
 
