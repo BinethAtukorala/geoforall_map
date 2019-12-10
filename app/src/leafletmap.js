@@ -19,7 +19,7 @@ window.onload = function () {
              },
 
       onEachFeature: function (feature, layer) {
-        layer.bindPopup('<b>' + feature.properties.Organisation + '</b><p>Application recieved / announced: ' + feature.properties.Application +'</p>');
+        layer.bindPopup('<b>' + feature.properties.Organisation + '</b>');
       }
     });
 
