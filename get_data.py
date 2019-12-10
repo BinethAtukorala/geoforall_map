@@ -69,5 +69,5 @@ for record in records:
 
 myFeatureCollection = FeatureCollection(myFeatures)
 
-with open("geojson.json", 'w') as out:
+with open("data.geojson", 'w') as out:
     out.write(geojson.dumps(myFeatureCollection, sort_keys=True))
