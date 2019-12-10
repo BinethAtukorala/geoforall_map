@@ -25,7 +25,7 @@ window.onload = function () {
 
 
     var map = L.map('my-map')
-    .setView([-30, 30], 1);
+    .setView([-13, 30], 1);
 
     basemap.addTo(map);
     geojson.addTo(map);

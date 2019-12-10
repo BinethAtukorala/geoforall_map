@@ -8,9 +8,13 @@ def main():
 
     data = []
 
+    print("Downloading web page...")
+
     beautiful = urllib3.PoolManager().request('GET', url).data
 
     soup = BeautifulSoup(beautiful, "html.parser")
+
+    print("Scraping data...")
 
     a = soup.find_all('table')
 
@@ -74,9 +78,10 @@ def main():
         myFeatures.append(myFeature)
 
     myFeatureCollection = FeatureCollection(myFeatures)
-
+    print("Writing data...")
     with open("data/data.geojson", 'w') as out:
         out.write(geojson.dumps(myFeatureCollection, sort_keys=True))
+    print("Done")
 
 if __name__ == '__main__':
     main()
