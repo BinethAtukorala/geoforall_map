@@ -6,13 +6,25 @@ window.onload = function () {
     $.getJSON("../data/data.geojson", function(data) {
 
     var geojson = L.geoJson(data, {
+
+        pointToLayer: function (feature, latlng) {
+            var smallIcon = L.icon({
+                               iconSize: [30, 30],
+                               iconAnchor: [13, 27],
+                               popupAnchor:  [1, -24],
+                               iconUrl: '../data/logo.png'
+                       });
+     
+              return L.marker(latlng, {icon: smallIcon});
+             },
+
       onEachFeature: function (feature, layer) {
-        layer.bindPopup(feature.properties.Organisation + '<p><b>Application recieved/announced: ' + feature.properties.Application) +'</b></p?';
+        layer.bindPopup('<b>' + feature.properties.Organisation + '</b><p>Application recieved / announced: ' + feature.properties.Application +'</p>');
       }
     });
 
 
-    var map = L.map('Geo-for-All-members')
+    var map = L.map('my-map')
     .setView([45, 14], 5);
 
     basemap.addTo(map);
