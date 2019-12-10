@@ -2,76 +2,81 @@ import urllib3, sys, geojson
 from bs4 import BeautifulSoup
 from geojson import Point, Feature, FeatureCollection
 
-url = "https://wiki.osgeo.org/wiki/Edu_current_initiatives#Current_members_of_the_Geo_for_All_Labs_Network"
+def main():
 
-data = []
+    url = "https://wiki.osgeo.org/wiki/Edu_current_initiatives#Current_members_of_the_Geo_for_All_Labs_Network"
 
-beautiful = urllib3.PoolManager().request('GET', url).data
+    data = []
 
-soup = BeautifulSoup(beautiful, "html.parser")
+    beautiful = urllib3.PoolManager().request('GET', url).data
 
-a = soup.find_all('table')
+    soup = BeautifulSoup(beautiful, "html.parser")
 
-table = a[0]
+    a = soup.find_all('table')
 
-rows = table.find_all('tr')
+    table = a[0]
+
+    rows = table.find_all('tr')
 
 
-for row in rows:
-    cols = row.find_all("td")
-    cols = [ele.text.strip() for ele in cols]
-    data.append([ele for ele in cols])
-# print(data[1])
-# ----- Format of "data" --------
-# 1 - Laboratory name, 2 - City, 3 - Country, 4 - Continent, 5 - Coordinates(long, lat), 
-# 6 - Application recieved / announced, 7 - Notes(specify category etc), 8 - Contact names, 9 - Contact emails
+    for row in rows:
+        cols = row.find_all("td")
+        cols = [ele.text.strip() for ele in cols]
+        data.append([ele for ele in cols])
+    # print(data[1])
+    # ----- Format of "data" --------
+    # 1 - Laboratory name, 2 - City, 3 - Country, 4 - Continent, 5 - Coordinates(long, lat), 
+    # 6 - Application recieved / announced, 7 - Notes(specify category etc), 8 - Contact names, 9 - Contact emails
 
-records = []
+    records = []
 
-for record in data:
-    if(len(record)>0):
-        # Organization
-        labname = record[1]
-        # City
-        city = record[2]
-        # Country
-        country = record[3]
-        # Continent
-        continent = record[4]
-        # Application status
-        applicationstatus = record[6]
-        # Notes
-        notes = record[7]
-        # Contact names
-        names = record[8]
-        # Contact emails
-        emails = record[9]
+    for record in data:
+        if(len(record)>0):
+            # Organization
+            labname = record[1]
+            # City
+            city = record[2]
+            # Country
+            country = record[3]
+            # Continent
+            continent = record[4]
+            # Application status
+            applicationstatus = record[6]
+            # Notes
+            notes = record[7]
+            # Contact names
+            names = record[8]
+            # Contact emails
+            emails = record[9]
 
-        # Long, lat
-        geolocation = record[5]
-        if(geolocation==u''):
-            continue
-        longitude = float(geolocation.split(',')[0])
-        latitude = float(geolocation.split(',')[1])
-        # print(name+" "+latitude+" "+longitude)
-        records.append([labname, longitude, latitude, city, country, continent, applicationstatus, notes, names, emails])
+            # Long, lat
+            geolocation = record[5]
+            if(geolocation==u''):
+                continue
+            longitude = float(geolocation.split(',')[0])
+            latitude = float(geolocation.split(',')[1])
+            # print(name+" "+latitude+" "+longitude)
+            records.append([labname, longitude, latitude, city, country, continent, applicationstatus, notes, names, emails])
 
-# print(MultiPoint(geo))
+    # print(MultiPoint(geo))
 
-myFeatures = []
+    myFeatures = []
 
-# ------- Format of "records" ------------
-# 0 - organisation, 1 - long, 2 - lat, 3 - city, 4 - country, 5 - continent, 6 - applicationstatus, 7 - notes,
-# 8 - names, 9 - emails
+    # ------- Format of "records" ------------
+    # 0 - organisation, 1 - long, 2 - lat, 3 - city, 4 - country, 5 - continent, 6 - applicationstatus, 7 - notes,
+    # 8 - names, 9 - emails
 
-for record in records:
-    myPoint = Point((record[1], record[2]))
-    myFeature = Feature(geometry=myPoint, properties={"Laboratory":record[0], "City":record[3], "Country":record[4], "Continent":record[5], "Application":record[6]
-                                                     , "Notes (specify category etc)":record[7], "Contact names":record[8], "Contact emails":record[9]})
-    # myFeature = Feature(geometry=myPoint, properties={"Organisation":record[0]})
-    myFeatures.append(myFeature)
+    for record in records:
+        myPoint = Point((record[1], record[2]))
+        myFeature = Feature(geometry=myPoint, properties={"Laboratory":record[0], "City":record[3], "Country":record[4], "Continent":record[5], "Application":record[6]
+                                                        , "Notes (specify category etc)":record[7], "Contact names":record[8], "Contact emails":record[9]})
+        # myFeature = Feature(geometry=myPoint, properties={"Organisation":record[0]})
+        myFeatures.append(myFeature)
 
-myFeatureCollection = FeatureCollection(myFeatures)
+    myFeatureCollection = FeatureCollection(myFeatures)
 
-with open("data/data.geojson", 'w') as out:
-    out.write(geojson.dumps(myFeatureCollection, sort_keys=True))
+    with open("data/data.geojson", 'w') as out:
+        out.write(geojson.dumps(myFeatureCollection, sort_keys=True))
+
+if __name__ == '__main__':
+    main()
