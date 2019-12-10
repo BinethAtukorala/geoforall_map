@@ -19,13 +19,13 @@ window.onload = function () {
              },
 
       onEachFeature: function (feature, layer) {
-        layer.bindPopup('<b>' + feature.properties.Organisation + '</b>');
+        layer.bindPopup('<b>' + feature.properties.Laboratory + '</b>');
       }
     });
 
 
     var map = L.map('my-map')
-    .setView([45, 14], 5);
+    .setView([0, 30], 1);
 
     basemap.addTo(map);
     geojson.addTo(map);
