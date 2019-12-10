@@ -12,17 +12,18 @@ soup = BeautifulSoup(beautiful, "html.parser")
 
 a = soup.find_all('table')
 
-table = a[1]
+table = a[0]
+
 rows = table.find_all('tr')
 
 
 for row in rows:
     cols = row.find_all("td")
     cols = [ele.text.strip() for ele in cols]
-    data.append([ele for ele in cols if ele])
-
+    data.append([ele for ele in cols])
+# print(data[1])
 # ----- Format of "data" --------
-# 1 - Organisation, 2 - City, 3 - Country, 4 - Continent, 5 - Coordinates(long, lat), 
+# 1 - Laboratory name, 2 - City, 3 - Country, 4 - Continent, 5 - Coordinates(long, lat), 
 # 6 - Application recieved / announced, 7 - Notes(specify category etc), 8 - Contact names, 9 - Contact emails
 
 records = []
@@ -30,7 +31,7 @@ records = []
 for record in data:
     if(len(record)>0):
         # Organization
-        organisation = record[1]
+        labname = record[1]
         # City
         city = record[2]
         # Country
@@ -48,10 +49,12 @@ for record in data:
 
         # Long, lat
         geolocation = record[5]
+        if(geolocation==u''):
+            continue
         longitude = float(geolocation.split(',')[0])
         latitude = float(geolocation.split(',')[1])
         # print(name+" "+latitude+" "+longitude)
-        records.append([organisation, longitude, latitude, city, country, continent, applicationstatus, notes, names, emails])
+        records.append([labname, longitude, latitude, city, country, continent, applicationstatus, notes, names, emails])
 
 # print(MultiPoint(geo))
 
@@ -63,7 +66,7 @@ myFeatures = []
 
 for record in records:
     myPoint = Point((record[1], record[2]))
-    myFeature = Feature(geometry=myPoint, properties={"Organisation":record[0], "City":record[3], "Country":record[4], "Continent":record[5], "Application":record[6]
+    myFeature = Feature(geometry=myPoint, properties={"Laboratory":record[0], "City":record[3], "Country":record[4], "Continent":record[5], "Application":record[6]
                                                      , "Notes (specify category etc)":record[7], "Contact names":record[8], "Contact emails":record[9]})
     # myFeature = Feature(geometry=myPoint, properties={"Organisation":record[0]})
     myFeatures.append(myFeature)
