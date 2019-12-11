@@ -7,7 +7,7 @@ Python 2
 
 Requirements
 ------------
-* Python 2   https://www.python.org/downloads/  
+* Python 2   https://www.python.org/downloads/release/python-2717/ 
 * virtualenv https://pypi.org/project/virtualenv/
 
 How to run
