@@ -15,7 +15,7 @@ Requirements
 
 How to run
 -----------
-1. Install above programs and navigate to app_py3/  
+1. Install above programs and navigate to app/  
 2. Execute ```source bin/activate``` in shell to activate.  
 3. (Optional) Run ```python3 generate.py``` and follow instructions to generate a new dataset from the website.  
 4. Execute ```python -m http.server 8000```.  
